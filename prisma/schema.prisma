@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// جدول البيانات الأساسية
+model Profile {
+  id          Int      @id @default(1)
+  password    String   @default("niceme") // حقل كلمة المرور الجديد
+  
+  nameAr      String
+  nameEn      String
+  titleAr     String
+  titleEn     String
+  bioAr       String
+  bioEn       String
+  
+  phone       String?
+  email       String?
+  linkedin    String?
+  github      String?
+}
+
+// جدول المهارات
+model Skill {
+  id      Int    @id @default(autoincrement())
+  nameAr  String
+  nameEn  String
+}
+
+// جدول اللغات
+model Language {
+  id       Int    @id @default(autoincrement())
+  nameAr   String
+  nameEn   String
+  levelAr  String
+  levelEn  String
+}
+
+// جدول المسار المهني
+model Experience {
+  id            Int    @id @default(autoincrement())
+  titleAr       String
+  titleEn       String
+  badgeAr       String
+  badgeEn       String
+  descriptionAr String
+  descriptionEn String
+}
+
+// جدول المشاريع (الرابط موحد، لكن الاسم بلغتين)
+model Project {
+  id      Int    @id @default(autoincrement())
+  titleAr String
+  titleEn String
+  link    String
+}

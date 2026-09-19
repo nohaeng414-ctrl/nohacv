@@ -23,19 +23,57 @@ export async function getDashboardData() {
       nameEn: 'Noha Al-Zebaq',
       titleAr: 'مهندسة معلوماتية',
       titleEn: 'Informatics Engineer',
-      bioAr: 'أعمل بشغف...',
-      bioEn: 'I passionately build...',
+      bioAr: 'أعمل بشغف على بناء حلول برمجية متطورة، تطوير واجهات المستخدم التفاعلية وإدارة قواعد البيانات باستخدام تقنيات حديثة مثل Next.js و React و Prisma.',
+      bioEn: 'I passionately build advanced software solutions, develop interactive user interfaces, and manage databases using modern technologies like Next.js, React, and Prisma.',
       phone: '00966530848339',
       email: 'nohaeng414@gmail.com',
-      linkedin: '',
-      github: ''
+      linkedin: 'https://www.linkedin.com/in/%D9%86%D9%87%D9%89-%D8%AD%D8%B3%D9%86-399a49135/',
+      github: 'https://github.com/nohaeng414-ctrl'
     }
   });
 
-  const skills = await prisma.skill.findMany();
-  const languages = await prisma.language.findMany();
-  const experiences = await prisma.experience.findMany();
-  const projects = await prisma.project.findMany();
+  // التأكد من جلب القوائم
+  let skills = await prisma.skill.findMany();
+  let languages = await prisma.language.findMany();
+  let experiences = await prisma.experience.findMany();
+  let projects = await prisma.project.findMany();
+
+  // إذا كانت القاعدة فارغة، نضع القيم الكاملة تلقائياً
+  if (skills.length === 0) {
+    await prisma.skill.createMany({
+      data: ['Next.js', 'JavaScript', 'SQLite', 'C++', 'C#', 'Java', 'SQL', 'CSS', 'HTTP', 'PHP'].map(s => ({ nameAr: s, nameEn: s }))
+    });
+    skills = await prisma.skill.findMany();
+  }
+
+  if (languages.length === 0) {
+    await prisma.language.createMany({
+      data: [
+        { nameAr: 'العربية', nameEn: 'Arabic', levelAr: 'اللغة الأم', levelEn: 'Native' },
+        { nameAr: 'الإنجليزية', nameEn: 'English', levelAr: 'مستوى متوسط', levelEn: 'Intermediate' }
+      ]
+    });
+    languages = await prisma.language.findMany();
+  }
+
+  if (experiences.length === 0) {
+    await prisma.experience.createMany({
+      data: [
+        { titleAr: 'تطوير الويب', titleEn: 'Web Development', badgeAr: 'مشاريع مستقلة', badgeEn: 'Freelance Projects', descriptionAr: '', descriptionEn: '' },
+        { titleAr: 'مدربة قيادة', titleEn: 'Driving Instructor', badgeAr: '(عامين)', badgeEn: '(2 Years)', descriptionAr: '', descriptionEn: '' }
+      ]
+    });
+    experiences = await prisma.experience.findMany();
+  }
+
+  if (projects.length === 0) {
+    await prisma.project.createMany({
+      data: [
+        { titleAr: 'رواية "دمشق لنا إلى يوم القيامة"', titleEn: 'Novel "Damascus is Ours Until Judgment Day"', link: 'https://noha-novel-ten.vercel.app/' }
+      ]
+    });
+    projects = await prisma.project.findMany();
+  }
 
   return { profile, skills, languages, experiences, projects };
 }

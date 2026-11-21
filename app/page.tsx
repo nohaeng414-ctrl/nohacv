@@ -1,7 +1,7 @@
 import React from 'react';
 import { prisma } from '@/lib/prisma';
 import ClientProfile from './ClientProfile'; // سنفصل الجزء التفاعلي قليلاً ليعمل بسلاسة
-
+export const dynamic = 'force-dynamic';
 // جلب البيانات مباشرة من السيرفر وقاعدة البيانات
 async function getData() {
   try {
